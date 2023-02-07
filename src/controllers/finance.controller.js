@@ -1,15 +1,14 @@
-const ModelSchema = require('../database/schema')
+const { financeSchema } = require('../database/schema')
 
 async function insertionDB(req, res) {
-  const { description, price } = req.body
+  const { title, description, price, methodPay } = req.body
   try {
-    if (!req.body || !description || !price)
+    if (!req.body || !title || !description || !price || !methodPay)
       return res.status(400).json({ success: false, message: 'try again' })
 
-    const insert = await ModelSchema.create(req.body)
+    const insert = await financeSchema.create(req.body)
 
     return res.status(200).json({ success: true, insert })
-
   } catch (error) {
     throw new Error(error)
   }
@@ -17,22 +16,8 @@ async function insertionDB(req, res) {
 
 async function findAllDB(req, res) {
   try {
-    const find = await ModelSchema.find()
-
-    return res.status(200).json({ success: true, find })
-  } catch (error) {
-    throw new Error(error)
-  }
-}
-
-async function findOneDB(req, res) {
-  const { id } = req.params
-  try {
-    if (!req.params)
-      return res.status(400).json({ success: false, message: 'try again' })
-
-    const find = await ModelSchema.findById(id)
-
+    const find = await financeSchema.find()
+    res.header("Access-Control-Allow-Origin", "*")
     return res.status(200).json({ success: true, find })
   } catch (error) {
     throw new Error(error)
@@ -44,7 +29,7 @@ async function deleteDB(req, res) {
   if (!req.params)
     return res.status(400).json({ success: false, message: 'try again' })
 
-  const deleteDB = await ModelSchema.findByIdAndDelete(id)
+  const deleteDB = await financeSchema.findByIdAndDelete(id)
 
   return res.status(200).json({ success: true, deleteDB })
 }
@@ -55,15 +40,18 @@ async function updateDB(req, res) {
   if (!req.params || !req.body || !title || !description || !price || !methodPay)
     return res.status(400).json({ success: false, message: 'ID não encontrado ou campos não preenchidos, tente novamente.' })
 
-  const updateDB = await ModelSchema.findByIdAndUpdate(id, req.body)
+  const updateDB = await financeSchema.findByIdAndUpdate(id, req.body)
+  const createdAt = updateDB._doc.createdAt
+  const idMongo = updateDB._doc._id
 
-  return res.status(200).json({ success: true, message: 'Data updated!' })
+  console.log(createdAt, idMongo)
+
+  return res.status(200).json({ success: true, message: 'Data updated!', obj })
 }
 
 module.exports = {
   insertionDB,
   findAllDB,
-  findOneDB,
   deleteDB,
   updateDB
 }
