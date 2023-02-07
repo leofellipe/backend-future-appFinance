@@ -17,7 +17,6 @@ async function insertionDB(req, res) {
 async function findAllDB(req, res) {
   try {
     const find = await financeSchema.find()
-    res.header("Access-Control-Allow-Origin", "*")
     return res.status(200).json({ success: true, find })
   } catch (error) {
     throw new Error(error)

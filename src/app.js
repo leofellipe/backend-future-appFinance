@@ -1,19 +1,12 @@
 const express = require('express')
+const app = express()
 const routes = require('./routes/router')
 const cors = require('cors')
+const { options } = require('./utils/cors')
 
-const corsOptions = {
-  origin: '*',
-  credentials: true,            //access-control-allow-credentials:true
-  optionSuccessStatus: 200
-}
-
-console.log(cors)
-
-const app = express()
 
 app.use(express.json())
 app.use(routes)
-app.use(cors(corsOptions))
+app.use(cors(options))
 
 module.exports = app
