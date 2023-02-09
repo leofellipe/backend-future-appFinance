@@ -1,4 +1,4 @@
-const { LoginSchema } = require('../database/schema')
+const { login } = require('../database/schema')
 
 async function createLogin(req, res) {
   const { email, password } = req.body
@@ -7,11 +7,11 @@ async function createLogin(req, res) {
       return res.status(400).json({ success: false, message: 'request body malformed.' })
     }
 
-    if (await LoginSchema.findOne({ email })) {
+    if (await login.findOne({ email })) {
       return res.status(400).json({ success: false, message: 'User already exists' })
     }
 
-    const insertDatabase = await LoginSchema.create(req.body)
+    const insertDatabase = await login.create(req.body)
 
     insertDatabase.password = undefined
 
@@ -24,7 +24,7 @@ async function createLogin(req, res) {
 async function findUsers(req, res) {
   const { email } = req.body
   try {
-    const userFind = await LoginSchema.findOne({ email })
+    const userFind = await login.findOne({ email })
 
     return res.status(200).json({ userFind })
 
