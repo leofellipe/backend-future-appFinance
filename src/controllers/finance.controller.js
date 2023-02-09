@@ -40,10 +40,11 @@ async function updateDB(req, res) {
     return res.status(400).json({ success: false, message: 'ID não encontrado ou campos não preenchidos, tente novamente.' })
 
   const updateDB = await financeSchema.findByIdAndUpdate(id, req.body)
-  const createdAt = updateDB._doc.createdAt
-  const idMongo = updateDB._doc._id
 
-  console.log(createdAt, idMongo)
+  const obj = {
+    createdAt: updateDB._doc.createdAt,
+    idMongo: updateDB._doc._id
+  }
 
   return res.status(200).json({ success: true, message: 'Data updated!', obj })
 }

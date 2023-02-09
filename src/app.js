@@ -1,12 +1,13 @@
 const express = require('express')
 const app = express()
 const routes = require('./routes/router')
-const cors = require('cors')
-const { options } = require('./utils/cors')
+const { cors, options } = require('./utils/cors')
 
-
+//Cors always needs to be called first using the express package for your 
+//front-end application to have access to your backend application and not give
+//a cors error
+app.use(cors(options))
 app.use(express.json())
 app.use(routes)
-app.use(cors(options))
 
 module.exports = app

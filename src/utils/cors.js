@@ -1,5 +1,10 @@
+const cors = require('cors')
+
 const options = {
-  origin: '*',
+  origin: 'http://localhost:3000',
 }
 
-module.exports = { options }
+module.exports = {
+  cors,
+  options
+}
